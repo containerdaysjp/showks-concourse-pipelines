@@ -2,13 +2,13 @@ resources:
 - name: app-staging
   type: git
   source:
-    uri: "https://github.com/containerdaysjp/showk-portal"
+    uri: https://github.com/containerdaysjp/showks-aggregator
     branch: staging
 
-- name: showk-portal-image
+- name: showks-aggregator-image
   type: docker-image
   source:
-    repository: containerdaysjp/showk-portal
+    repository: containerdaysjp/showks-aggregator
     username: ((registry_user))
     password: ((registry_password))
 
@@ -18,7 +18,7 @@ jobs:
   - get: app-staging
     trigger: true
 
-  - put: showk-portal-image
+  - put: showks-aggregator-image
     params:
       build: app-staging/
       tag_file: app-staging/.git/refs/heads/staging
