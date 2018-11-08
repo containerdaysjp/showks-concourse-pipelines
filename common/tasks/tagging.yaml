@@ -3,7 +3,7 @@ image_resource:
   type: docker-image
   source:
     repository: docker
-    tag: 18.06.1-ce
+    tag: 18.06.1-ce-git
 inputs:
   - name: concourse-pipelines
   - name: app-master
