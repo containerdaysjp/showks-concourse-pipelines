@@ -1,0 +1,27 @@
+resources:
+- name: app-master
+  type: git
+  source:
+    uri: https://github.com/containerdaysjp/showks-portal
+    branch: master
+
+- name: concourse-pipelines
+  type: git
+  source:
+    uri: https://github.com/containerdaysjp/showks-concourse-pipelines
+    branch: master
+
+jobs:
+- name: master
+  plan:
+  - get: app-master
+    trigger: true
+  - get: concourse-pipelines
+  - task: from-staging-image-to-master
+    file: concourse-pipelines/common/tasks/tagging.yaml
+    params:
+      GITREPO: app-master/
+      IMAGE_NAME: containerdaysjp/showks-portal
+      REGISTRY_USER: {{registry_user}}
+      REGISTRY_PASS: {{registry_password}}
+
