@@ -4,11 +4,14 @@ cd ${GITREPO}
 git pull --all
 
 git config --global pager.branch cat
+git config --global pager.graph cat
 git branch --all -v
 echo ===============
 git branch
 echo ============
 git branch --all
+echo =================
+git graph
 echo =================
 
 
