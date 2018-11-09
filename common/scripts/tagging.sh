@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd ${GITREPO}
-#git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
 git fetch --all
 
 git config --global pager.branch cat
