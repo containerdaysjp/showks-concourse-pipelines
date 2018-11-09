@@ -4,14 +4,14 @@ cd ${GITREPO}
 git pull --all
 
 git config --global pager.branch cat
-git config --global pager.graph cat
+git config --global pager.log cat
 git branch --all -v
 echo ===============
 git branch
 echo ============
 git branch --all
 echo =================
-git graph
+git log --graph --color --date-order -C -M --all --date=short --pretty=format:"<%h> %ad [%an] %Cgreen%d%Creset %s"
 echo =================
 
 
