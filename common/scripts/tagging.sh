@@ -2,6 +2,15 @@
 
 cd ${GITREPO}
 
+git config --global pager.branch cat
+git branch --all -v
+echo ===============
+git branch
+echo ============
+git branch --all
+echo =================
+
+
 STG_COMMIT_HASH=$(git show-branch --merge-base --all)
 MASTER_COMMIT_HASH=$(cat .git/refs/heads/master)
 
