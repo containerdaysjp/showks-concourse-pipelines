@@ -1,7 +1,8 @@
 #!/bin/bash
 
 cd ${GITREPO}
-git pull --all
+#git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+git fetch --all
 
 git config --global pager.branch cat
 git config --global pager.log cat
