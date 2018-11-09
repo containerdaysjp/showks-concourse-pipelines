@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd ${GITREPO}
+git pull --all
 
 git config --global pager.branch cat
 git branch --all -v

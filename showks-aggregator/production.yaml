@@ -3,7 +3,7 @@ resources:
   type: git
   source:
     uri: https://github.com/containerdaysjp/showks-aggregator
-    branch: master
+#    branch: master
 
 - name: concourse-pipelines
   type: git
