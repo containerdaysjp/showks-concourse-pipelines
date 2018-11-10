@@ -22,6 +22,7 @@ MASTER_COMMIT_HASH=$(cat .git/refs/heads/master)
 STG_IMAGE_NAME=${IMAGE_NAME}:stg-${STG_COMMIT_HASH}
 MASTER_IMAGE_NAME=${IMAGE_NAME}:prod-${MASTER_COMMIT_HASH}
 
+cd ..
 git clone https://github.com/moby/moby.git
 cp moby/contrib/download-frozen-image-v2.sh .
 mkdir ./outfile
