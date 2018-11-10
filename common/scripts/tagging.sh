@@ -22,13 +22,12 @@ MASTER_COMMIT_HASH=$(cat .git/refs/heads/master)
 STG_IMAGE_NAME=${IMAGE_NAME}:stg-${STG_COMMIT_HASH}
 MASTER_IMAGE_NAME=${IMAGE_NAME}:prod-${MASTER_COMMIT_HASH}
 
-git clone https://github.com/MasayaAoyama/moby.git
-cd moby
-bash download-frozen-image-v2.sh ${STG_IMAGE_NAME}
-mkdir ../../outfile
-mv ${STG_IMAGE_NAME}/* ../../outfile
+git clone https://github.com/moby/moby.git
+cp moby/contrib/download-frozen-image-v2.sh .
+mkdir ./outfile
+bash download-frozen-image-v2.sh ./outfile ${STG_IMAGE_NAME}
 
-cd ../../outfile
+cd ./outfile
 pwd
 ls -lah
 
