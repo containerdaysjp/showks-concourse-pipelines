@@ -3,7 +3,7 @@ resources:
   type: git
   source:
     uri: https://github.com/containerdaysjp/showks-aggregator
-#    branch: master
+    branch: master
 
 - name: concourse-pipelines
   type: git
@@ -36,6 +36,9 @@ jobs:
       # load_file: app-master/image.tgz
       # load_repository: 
       # import_file: outfile/image.tar
-      load: outfile
+      load_file: outfile/image
+      load_repository: containerdaysjp/showks-aggregator
+      load_tag: latest
+      # stg-e31c82b3fa1bc7e3ed190930a2714958967e03c0
       tag_file: app-master/.git/refs/heads/master
       tag_prefix: prod-

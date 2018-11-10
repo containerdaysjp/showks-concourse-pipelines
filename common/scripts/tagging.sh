@@ -19,7 +19,8 @@ echo =================
 STG_COMMIT_HASH=$(git show-branch --merge-base --all)
 MASTER_COMMIT_HASH=$(cat .git/refs/heads/master)
 
-STG_IMAGE_NAME=${IMAGE_NAME}:stg-${STG_COMMIT_HASH}
+# STG_IMAGE_NAME=${IMAGE_NAME}:stg-${STG_COMMIT_HASH}
+STG_IMAGE_NAME=${IMAGE_NAME}:latest
 MASTER_IMAGE_NAME=${IMAGE_NAME}:prod-${MASTER_COMMIT_HASH}
 
 git clone https://github.com/MasayaAoyama/moby.git
