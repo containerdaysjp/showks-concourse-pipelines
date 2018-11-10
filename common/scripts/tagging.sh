@@ -25,10 +25,10 @@ MASTER_IMAGE_NAME=${IMAGE_NAME}:prod-${MASTER_COMMIT_HASH}
 cd ..
 git clone https://github.com/moby/moby.git
 cp moby/contrib/download-frozen-image-v2.sh .
-mkdir ./outfile
-bash download-frozen-image-v2.sh ./outfile ${STG_IMAGE_NAME}
+mkdir ./outfile/image
+bash download-frozen-image-v2.sh ./outfile/image ${STG_IMAGE_NAME}
 
-cd ./outfile
+cd ./outfile/image
 pwd
 ls -lah
 
