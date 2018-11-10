@@ -7,6 +7,8 @@ image_resource:
 inputs:
   - name: concourse-pipelines
   - name: app-master
+outputs:
+  - name: app-master
 run:
   path: concourse-pipelines/common/scripts/tagging.sh
 
