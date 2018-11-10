@@ -11,6 +11,13 @@ resources:
     uri: https://github.com/containerdaysjp/showks-concourse-pipelines
     branch: master
 
+- name: showks-portal-image
+  type: docker-image
+  source:
+    repository: containerdaysjp/showks-portal
+    username: ((registry_user))
+    password: ((registry_password))
+
 jobs:
 - name: master
   plan:
@@ -22,6 +29,16 @@ jobs:
     params:
       GITREPO: app-master/
       IMAGE_NAME: containerdaysjp/showks-portal
-      REGISTRY_USER: {{registry_user}}
-      REGISTRY_PASS: {{registry_password}}
 
+  - put: showks-portal-image
+    params:
+      # from-staging-image-to-master/app-master/image.tgz
+      # load_file: app-master/image.tgz
+      # load_repository: 
+      # import_file: outfile/image.tar
+      load_file: outfile/image
+      load_repository: containerdaysjp/showks-portal
+      load_tag: latest
+      # stg-e31c82b3fa1bc7e3ed190930a2714958967e03c0
+      tag_file: app-master/.git/refs/heads/master
+      tag_prefix: prod-

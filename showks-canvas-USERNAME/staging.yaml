@@ -23,3 +23,5 @@ jobs:
       build: app-staging/
       tag_file: app-staging/.git/refs/heads/staging
       tag_prefix: stg-
+      tag_as_latest: true
+
