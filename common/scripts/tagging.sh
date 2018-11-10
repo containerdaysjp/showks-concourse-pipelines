@@ -27,6 +27,10 @@ cd moby
 bash download-frozen-image-v2.sh ${STG_IMAGE_NAME}
 mv ${STG_IMAGE_NAME}.tgz ../image.tgz
 
+cd ..
+pwd
+ls -lah
+
 #docker login -u ${REGISTRY_USER} -p ${REGISTRY_PASS}
 #docker tag ${STG_IMAGE_NAME} ${MASTER_IMAGE_NAME}
 #docker push ${MASTER_IMAGE_NAME}
