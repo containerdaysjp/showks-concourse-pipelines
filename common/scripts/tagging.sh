@@ -25,7 +25,7 @@ MASTER_IMAGE_NAME=${IMAGE_NAME}:prod-${MASTER_COMMIT_HASH}
 git clone https://github.com/MasayaAoyama/moby.git
 cd moby
 bash download-frozen-image-v2.sh ${STG_IMAGE_NAME}
-mv ${STG_IMAGE_NAME}.tgz ../image.tgz
+mv ${STG_IMAGE_NAME}.tar ../image.tar
 
 cd ..
 pwd

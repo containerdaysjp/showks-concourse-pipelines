@@ -33,6 +33,8 @@ jobs:
   - put: showks-aggregator-image
     params:
       # from-staging-image-to-master/app-master/image.tgz
-      import_file: app-master/image.tgz
+      # load_file: app-master/image.tgz
+      # load_repository: 
+      import_file: app-master/image.tar
       tag_file: app-master/.git/refs/heads/master
       tag_prefix: prod-
