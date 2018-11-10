@@ -35,6 +35,7 @@ jobs:
       # from-staging-image-to-master/app-master/image.tgz
       # load_file: app-master/image.tgz
       # load_repository: 
-      import_file: outfile/image.tar
+      # import_file: outfile/image.tar
+      load: outfile
       tag_file: app-master/.git/refs/heads/master
       tag_prefix: prod-

@@ -26,7 +26,7 @@ git clone https://github.com/MasayaAoyama/moby.git
 cd moby
 bash download-frozen-image-v2.sh ${STG_IMAGE_NAME}
 mkdir ../../outfile
-mv ${STG_IMAGE_NAME}.tar ../../outfile/image.tar
+mv ${STG_IMAGE_NAME}/* ../../outfile
 
 cd ../../outfile
 pwd
