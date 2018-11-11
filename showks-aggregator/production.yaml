@@ -1,5 +1,5 @@
 resources:
-- name: app-master
+- name: app
   type: git
   source:
     uri: https://github.com/containerdaysjp/showks-aggregator
@@ -21,13 +21,13 @@ resources:
 jobs:
 - name: master
   plan:
-  - get: app-master
+  - get: app
     trigger: true
   - get: concourse-pipelines
   - task: from-staging-image-to-master
     file: concourse-pipelines/common/tasks/tagging.yaml
     params:
-      GITREPO: app-master/
+      GITREPO: app/
       IMAGE_NAME: containerdaysjp/showks-aggregator
 
   - put: showks-aggregator-image
@@ -35,7 +35,7 @@ jobs:
       load_file: outfile/image
       load_repository: containerdaysjp/showks-aggregator
       load_tag: latest
-      tag_file: app-master/.git/refs/heads/master
+      tag_file: app/.git/refs/heads/master
       tag_prefix: prod-
 
   - task: update-manifest

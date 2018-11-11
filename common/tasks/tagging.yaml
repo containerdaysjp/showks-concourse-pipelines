@@ -6,7 +6,7 @@ image_resource:
     tag: 18.06.1-ce-dind-git
 inputs:
   - name: concourse-pipelines
-  - name: app-master
+  - name: app
 outputs:
   - name: outfile
 run:

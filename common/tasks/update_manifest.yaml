@@ -6,7 +6,7 @@ image_resource:
     tag: 7
 inputs:
   - name: concourse-pipelines
-  - name: app-master
+  - name: app
 run:
   path: concourse-pipelines/common/scripts/update_manifest.sh
 

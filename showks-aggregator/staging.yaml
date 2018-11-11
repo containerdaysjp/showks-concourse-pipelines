@@ -1,5 +1,5 @@
 resources:
-- name: app-staging
+- name: app
   type: git
   source:
     uri: https://github.com/containerdaysjp/showks-aggregator
@@ -21,13 +21,13 @@ resources:
 jobs:
 - name: staging
   plan:
-  - get: app-staging
+  - get: app
     trigger: true
-
+  - get: concourse-pipelines
   - put: showks-aggregator-image
     params:
-      build: app-staging/
-      tag_file: app-staging/.git/refs/heads/staging
+      build: app/
+      tag_file: app/.git/refs/heads/staging
       tag_prefix: stg-
       tag_as_latest: true
 

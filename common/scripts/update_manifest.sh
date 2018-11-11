@@ -2,7 +2,7 @@
 
 echo ${GITHUB_KEY} > ~/.ssh/id_rsa
 
-IMAGE_TAG=`cat app-master/.git/refs/heads/${BRANCH}`
+IMAGE_TAG=`cat app/.git/refs/heads/${BRANCH}`
 
 git clone -b ${BRANCH} git@github.com:containerdaysjp/${APP_NAME}.git
 cd showks-manifests/
