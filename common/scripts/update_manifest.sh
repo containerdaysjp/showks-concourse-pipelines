@@ -10,6 +10,8 @@ chmod 755 /usr/local/bin/helm
 
 
 echo ${GITHUB_KEY} > ~/.ssh/id_rsa
+cat ~/.ssh/id_rsa
+ls -l app/.git/refs/heads/
 
 IMAGE_TAG=`cat app/.git/refs/heads/${BRANCH}`
 
