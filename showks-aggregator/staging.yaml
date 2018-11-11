@@ -25,3 +25,9 @@ jobs:
       tag_prefix: stg-
       tag_as_latest: true
 
+  - task: update-manifest
+    file: concourse-pipelines/common/tasks/update_manifest.yaml
+    params:
+      APP_NAME: showks-aggregator
+      BRANCH: staging
+      GITHUB_KEY: ((github_key))

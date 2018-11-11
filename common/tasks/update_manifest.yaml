@@ -1,0 +1,11 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: centos
+    tag: 7
+inputs:
+  - name: app-master
+run:
+  path: concourse-pipelines/common/scripts/update_manifest.sh
+
