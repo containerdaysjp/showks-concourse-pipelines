@@ -5,6 +5,7 @@ image_resource:
     repository: centos
     tag: 7
 inputs:
+  - name: concourse-pipelines
   - name: app-master
 run:
   path: concourse-pipelines/common/scripts/update_manifest.sh
