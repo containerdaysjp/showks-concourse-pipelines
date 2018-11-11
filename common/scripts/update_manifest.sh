@@ -14,10 +14,12 @@ host *
         UserKnownHostsFile=/dev/null
 _EOF_
 
+cd -
 echo ${GITHUB_KEY} > ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa
-ls -l app/.git/refs/heads/
+chmod 600 ~/.ssh/id_rsa
 
+ls -l app/.git/refs/heads/
 IMAGE_TAG=`cat app/.git/refs/heads/${BRANCH}`
 
 git clone -b ${BRANCH} git@github.com:containerdaysjp/showks-manifests.git
