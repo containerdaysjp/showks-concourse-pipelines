@@ -8,6 +8,11 @@ tar -xvf /tmp/helm.tar.gz
 mv linux-amd64/helm /usr/local/bin/
 chmod 755 /usr/local/bin/helm
 
+cat << _EOF_ >> ~/.ssh/config
+host *
+        StrictHostKeyChecking no
+        UserKnownHostsFile=/dev/null
+_EOF_
 
 echo ${GITHUB_KEY} > ~/.ssh/id_rsa
 cat ~/.ssh/id_rsa
