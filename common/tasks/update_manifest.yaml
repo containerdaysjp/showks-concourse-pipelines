@@ -8,8 +8,8 @@ inputs:
   - name: concourse-pipelines
   - name: app
   - name: k8s-manifests
-outputs:
-  - name: changed-k8s-manifests
+#outputs:
+#  - name: changed-k8s-manifests
 run:
   path: concourse-pipelines/common/scripts/update_manifest.sh
 
