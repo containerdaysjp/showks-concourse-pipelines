@@ -51,4 +51,6 @@ jobs:
       APP_NAME: showks-aggregator
       TAG_PREFIX: prod-
   - put: k8s-manifests
+    params:
+      repository: k8s-manifests
 

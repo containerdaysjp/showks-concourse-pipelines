@@ -6,7 +6,7 @@ tar -xvf /tmp/helm.tar.gz
 mv linux-amd64/helm /usr/local/bin/
 chmod 755 /usr/local/bin/helm
 
-IMAGE_TAG=${TAG_PREFIX}`git -C ./app/ rev-parse HEAD`
+IMAGE_TAG=${TAG_PREFIX}`git --git-dir ./app/.git rev-parse HEAD`
 
 cd k8s-manifests/
 mkdir -p manifests/${APP_NAME}/
