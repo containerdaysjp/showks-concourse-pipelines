@@ -12,7 +12,7 @@ chmod 755 /usr/local/bin/helm
 IMAGE_TAG=${TAG_PREFIX}`git --git-dir ./app/.git rev-parse HEAD`
 BRANCH=`git --git-dir ./k8s-manifests/.git rev-parse --abbrev-ref HEAD`
 
-cp -ar k8s-manifests/* changed-k8s-manifests
+cp -ar k8s-manifests/* k8s-manifests/.* changed-k8s-manifests
 
 ls -al
 
