@@ -18,12 +18,20 @@ resources:
     uri: https://github.com/containerdaysjp/showks-concourse-pipelines
     branch: master
 
+- name: k8s-manifests
+  type: git
+  source:
+    uri: https://github.com/containerdaysjp/showks-manifests
+    branch: staging
+    private_key: ((github_key))
+
 jobs:
 - name: staging
   plan:
   - get: app
     trigger: true
   - get: concourse-pipelines
+  - get: k8s-manifests
   - put: showks-aggregator-image
     params:
       build: app/
@@ -35,5 +43,6 @@ jobs:
     file: concourse-pipelines/common/tasks/update_manifest.yaml
     params:
       APP_NAME: showks-aggregator
-      BRANCH: staging
-      GITHUB_KEY: ((github_key))
+      TAG_PREFIX: stg-
+  - put: k8s-manifests
+

@@ -49,5 +49,6 @@ jobs:
     file: concourse-pipelines/common/tasks/update_manifest.yaml
     params:
       APP_NAME: showks-aggregator
+      TAG_PREFIX: prod-
   - put: k8s-manifests
 
