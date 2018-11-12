@@ -52,5 +52,5 @@ jobs:
       TAG_PREFIX: prod-
   - put: k8s-manifests
     params:
-      repository: k8s-manifests
+      repository: changed-k8s-manifests
 

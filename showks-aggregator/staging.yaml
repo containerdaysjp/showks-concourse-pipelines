@@ -46,4 +46,4 @@ jobs:
       TAG_PREFIX: stg-
   - put: k8s-manifests
     params:
-      repository: k8s-manifests
+      repository: changed-k8s-manifests
