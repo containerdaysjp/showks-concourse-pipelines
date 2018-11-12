@@ -17,4 +17,5 @@ mkdir -p manifests/${APP_NAME}/
 helm template helm/${APP_NAME} --set image.tag=${IMAGE_TAG} > manifests/${APP_NAME}/manifest.yaml
 git add .
 git commit -m "update ${BRANCH} image to ${APP_NAME}:${IMAGE_TAG}"
+git push origin ${BRANCH}
 
