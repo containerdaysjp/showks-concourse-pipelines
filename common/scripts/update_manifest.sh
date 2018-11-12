@@ -13,6 +13,12 @@ IMAGE_TAG=${TAG_PREFIX}`git --git-dir ./app/.git rev-parse HEAD`
 BRANCH=`git --git-dir ./k8s-manifests/.git rev-parse --abbrev-ref HEAD`
 
 cp -ar k8s-manifests changed-k8s-manifests
+
+ls -al
+
+ls -al k8s-manifests/
+ls -al changed-k8s-manifests/
+
 cd changed-k8s-manifests/
 mkdir -p manifests/${APP_NAME}/
 helm template helm/${APP_NAME} --set image.tag=${IMAGE_TAG} > manifests/${APP_NAME}/manifest.yaml
