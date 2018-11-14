@@ -10,15 +10,9 @@ mv linux-amd64/helm /usr/local/bin/
 chmod 755 /usr/local/bin/helm
 
 IMAGE_TAG=${TAG_PREFIX}`git --git-dir ./app/.git rev-parse HEAD`
-BRANCH=`git --git-dir ./k8s-manifests/.git rev-parse --abbrev-ref HEAD`
 
 mkdir changed-k8s-manifests/
 cp -ar k8s-manifests/* k8s-manifests/.git changed-k8s-manifests/
-
-ls -al
-
-ls -al k8s-manifests/
-ls -al changed-k8s-manifests/
 
 cd changed-k8s-manifests/
 mkdir -p manifests/${APP_NAME}/
