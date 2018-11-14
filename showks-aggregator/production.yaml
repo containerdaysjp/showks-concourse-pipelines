@@ -18,7 +18,7 @@ resources:
     branch: master
     private_key: ((github_key))
 
-- name: showks-aggregator-image
+- name: container-image
   type: docker-image
   source:
     repository: containerdaysjp/showks-aggregator
@@ -31,25 +31,25 @@ jobs:
   - get: app
     trigger: true
   - get: concourse-pipelines
-  - task: from-staging-image-to-master
+  - task: tagging
     file: concourse-pipelines/common/tasks/tagging.yaml
     params:
       GITREPO: app/
       IMAGE_NAME: containerdaysjp/showks-aggregator
   - get: k8s-manifests
-  - put: showks-aggregator-image
+  - put: container-image
     params:
       load_file: outfile/image
       load_repository: containerdaysjp/showks-aggregator
       load_tag: latest
       tag_file: app/.git/refs/heads/master
       tag_prefix: prod-
-
   - task: update-manifest
     file: concourse-pipelines/common/tasks/update_manifest.yaml
     params:
       APP_NAME: showks-aggregator
       TAG_PREFIX: prod-
+      BRANCH: master
   - put: k8s-manifests
     params:
       repository: changed-k8s-manifests
