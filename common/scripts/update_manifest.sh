@@ -11,7 +11,6 @@ chmod 755 /usr/local/bin/helm
 
 IMAGE_TAG=${TAG_PREFIX}`git --git-dir ./app/.git rev-parse HEAD`
 
-mkdir changed-k8s-manifests/
 cp -ar k8s-manifests/* k8s-manifests/.git changed-k8s-manifests/
 
 cd changed-k8s-manifests/

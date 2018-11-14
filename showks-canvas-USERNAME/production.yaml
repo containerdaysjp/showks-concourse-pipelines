@@ -1,5 +1,5 @@
 resources:
-- name: app-master
+- name: app
   type: git
   source:
     uri: https://github.com/containerdaysjp/showks-canvas-USERNAME
@@ -11,7 +11,14 @@ resources:
     uri: https://github.com/containerdaysjp/showks-concourse-pipelines
     branch: master
 
-- name: showks-canvas-USERNAME-image
+- name: k8s-manifests
+  type: git
+  source:
+    uri: git@github.com:containerdaysjp/showks-manifests.git
+    branch: master
+    private_key: ((github_key))
+
+- name: container-image
   type: docker-image
   source:
     repository: containerdaysjp/showks-canvas-USERNAME
@@ -21,24 +28,29 @@ resources:
 jobs:
 - name: master
   plan:
-  - get: app-master
+  - get: app
     trigger: true
   - get: concourse-pipelines
-  - task: from-staging-image-to-master
+  - task: tagging
     file: concourse-pipelines/common/tasks/tagging.yaml
     params:
-      GITREPO: app-master/
+      GITREPO: app/
       IMAGE_NAME: containerdaysjp/showks-canvas-USERNAME
-
-  - put: showks-canvas-USERNAME-image
+  - get: k8s-manifests
+  - put: container-image
     params:
-      # from-staging-image-to-master/app-master/image.tgz
-      # load_file: app-master/image.tgz
-      # load_repository: 
-      # import_file: outfile/image.tar
       load_file: outfile/image
       load_repository: containerdaysjp/showks-canvas-USERNAME
       load_tag: latest
-      # stg-e31c82b3fa1bc7e3ed190930a2714958967e03c0
-      tag_file: app-master/.git/refs/heads/master
+      tag_file: app/.git/refs/heads/master
       tag_prefix: prod-
+  - task: update-manifest
+    file: concourse-pipelines/common/tasks/update_manifest.yaml
+    params:
+      APP_NAME: showks-canvas-USERNAME
+      TAG_PREFIX: prod-
+      BRANCH: master
+  - put: k8s-manifests
+    params:
+      repository: changed-k8s-manifests
+

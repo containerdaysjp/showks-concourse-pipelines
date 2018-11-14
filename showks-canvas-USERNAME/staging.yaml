@@ -1,27 +1,49 @@
 resources:
-- name: app-staging
+- name: app
   type: git
   source:
     uri: https://github.com/containerdaysjp/showks-canvas-USERNAME
     branch: staging
 
-- name: showks-canvas-USERNAME-image
+- name: container-image
   type: docker-image
   source:
     repository: containerdaysjp/showks-canvas-USERNAME
     username: ((registry_user))
     password: ((registry_password))
 
+- name: concourse-pipelines
+  type: git
+  source:
+    uri: https://github.com/containerdaysjp/showks-concourse-pipelines
+    branch: master
+
+- name: k8s-manifests
+  type: git
+  source:
+    uri: git@github.com:containerdaysjp/showks-manifests.git
+    branch: staging
+    private_key: ((github_key))
+
 jobs:
 - name: staging
   plan:
-  - get: app-staging
+  - get: app
     trigger: true
-
-  - put: showks-canvas-USERNAME-image
+  - get: concourse-pipelines
+  - get: k8s-manifests
+  - put: container-image
     params:
-      build: app-staging/
-      tag_file: app-staging/.git/refs/heads/staging
+      build: app/
+      tag_file: app/.git/refs/heads/staging
       tag_prefix: stg-
       tag_as_latest: true
-
+  - task: update-manifest
+    file: concourse-pipelines/common/tasks/update_manifest.yaml
+    params:
+      APP_NAME: showks-canvas-USERNAME
+      TAG_PREFIX: stg-
+      BRANCH: staging
+  - put: k8s-manifests
+    params:
+      repository: changed-k8s-manifests
