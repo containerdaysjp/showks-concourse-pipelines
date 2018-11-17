@@ -2,7 +2,8 @@ platform: linux
 image_resource:
   type: docker-image
   source:
-    repository: ruby:2.3.3
+    repository: ruby
+    tag: 2.3.3
 inputs:
   - name: showks-form
   - name: concourse-pipelines
