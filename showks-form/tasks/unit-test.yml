@@ -1,0 +1,15 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: containerdaysjp/docker
+inputs:
+  - name: showks-form
+  - name: concourse-pipelines
+outputs:
+  - name: outfile
+run:
+  path: concourse-pipelines/tasks/unit-test.sh
+  args: [
+    --input-dir, showks-form
+  ]
