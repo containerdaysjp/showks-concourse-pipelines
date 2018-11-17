@@ -10,7 +10,7 @@ inputs:
 outputs:
   - name: outfile
 run:
-  path: concourse-pipelines/tasks/unit-test.sh
+  path: concourse-pipelines/showks-form/tasks/unit-test.sh
   args: [
     --input-dir, showks-form
   ]
