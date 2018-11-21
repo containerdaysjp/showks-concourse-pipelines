@@ -14,7 +14,7 @@ resources:
 - name: k8s-manifests
   type: git
   source:
-    uri: git@github.com:containerdaysjp/showks-manifests.git
+    uri: git@github.com:containerdaysjp/showks-manifests-prod.git
     branch: master
     private_key: ((github_key))
 
