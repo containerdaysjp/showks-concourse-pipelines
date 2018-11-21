@@ -16,6 +16,8 @@ cp -ar k8s-manifests/* k8s-manifests/.git changed-k8s-manifests/
 cd changed-k8s-manifests/
 mkdir -p manifests/${APP_NAME}/
 helm template ../app/helm/ --set image.tag=${IMAGE_TAG} > manifests/${APP_NAME}/manifest.yaml
+git fetch
+git merge origin/master --ff-only
 git add .
 git commit -m "update ${BRANCH} image to ${APP_NAME}:${IMAGE_TAG}"
 
