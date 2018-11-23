@@ -23,7 +23,7 @@ resources:
   source:
     uri: git@github.com:containerdaysjp/showks-manifests-stg.git
     branch: master
-    private_key: ((github_stg_manifests_key))
+    private_key: ((github_key))
 
 jobs:
 - name: staging
