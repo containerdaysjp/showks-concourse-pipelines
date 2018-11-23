@@ -2,13 +2,13 @@ resources:
 - name: app
   type: git
   source:
-    uri: https://github.com/containerdaysjp/showks-portal
+    uri: https://github.com/containerdaysjp/showks-portal-frontend
     branch: staging
 
 - name: container-image
   type: docker-image
   source:
-    repository: containerdaysjp/showks-portal
+    repository: containerdaysjp/showks-portal-frontend
     username: ((registry_user))
     password: ((registry_password))
 
@@ -21,9 +21,9 @@ resources:
 - name: k8s-manifests
   type: git
   source:
-    uri: git@github.com:containerdaysjp/showks-manifests.git
-    branch: staging
-    private_key: ((github_key))
+    uri: git@github.com:containerdaysjp/showks-manifests-stg.git
+    branch: master
+    private_key: ((github_stg_manifests_key))
 
 jobs:
 - name: staging
@@ -41,9 +41,10 @@ jobs:
   - task: update-manifest
     file: concourse-pipelines/common/tasks/update_manifest.yaml
     params:
-      APP_NAME: showks-portal
+      APP_NAME: showks-portal-frontend
       TAG_PREFIX: stg-
       BRANCH: staging
+      NAME_SUFFIX: -temp
   - put: k8s-manifests
     params:
       repository: changed-k8s-manifests
