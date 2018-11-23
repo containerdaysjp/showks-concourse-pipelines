@@ -44,6 +44,7 @@ jobs:
       APP_NAME: showks-portal-frontend
       TAG_PREFIX: stg-
       BRANCH: staging
+      NAME_SUFFIX: -temp
   - put: k8s-manifests
     params:
       repository: changed-k8s-manifests
