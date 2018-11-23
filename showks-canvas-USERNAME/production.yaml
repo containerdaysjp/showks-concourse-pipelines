@@ -50,6 +50,7 @@ jobs:
       APP_NAME: showks-canvas-USERNAME
       TAG_PREFIX: prod-
       BRANCH: master
+      USERID: USERNAME
   - put: k8s-manifests
     params:
       repository: changed-k8s-manifests

@@ -44,6 +44,7 @@ jobs:
       APP_NAME: showks-canvas-USERNAME
       TAG_PREFIX: stg-
       BRANCH: staging
+      USERID: USERNAME
   - put: k8s-manifests
     params:
       repository: changed-k8s-manifests

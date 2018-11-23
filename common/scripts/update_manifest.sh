@@ -17,7 +17,7 @@ cp -ar k8s-manifests/* k8s-manifests/.git changed-k8s-manifests/
 
 cd changed-k8s-manifests/
 mkdir -p manifests/${APP_NAME}/
-helm template ../app/helm/ --set image.tag=${IMAGE_TAG} > manifests/${APP_NAME}/manifest.yaml
+helm template ../app/helm/ --set image.tag=${IMAGE_TAG} --set userID=${USERID} > manifests/${APP_NAME}/manifest.yaml
 git fetch
 git merge origin/master --ff-only
 git add .
