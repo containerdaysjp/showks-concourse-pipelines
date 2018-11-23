@@ -1,0 +1,56 @@
+resources:
+- name: app
+  type: git
+  source:
+    uri: https://github.com/containerdaysjp/showks-portal
+    branch: master
+
+- name: concourse-pipelines
+  type: git
+  source:
+    uri: https://github.com/containerdaysjp/showks-concourse-pipelines
+    branch: master
+
+- name: k8s-manifests
+  type: git
+  source:
+    uri: git@github.com:containerdaysjp/showks-manifests-prod.git
+    branch: master
+    private_key: ((github_prod_manifests_key))
+
+- name: container-image
+  type: docker-image
+  source:
+    repository: containerdaysjp/showks-portal
+    username: ((registry_user))
+    password: ((registry_password))
+
+jobs:
+- name: master
+  plan:
+  - get: app
+    trigger: true
+  - get: concourse-pipelines
+  - task: tagging
+    file: concourse-pipelines/common/tasks/tagging.yaml
+    params:
+      GITREPO: app/
+      IMAGE_NAME: containerdaysjp/showks-portal
+  - get: k8s-manifests
+  - put: container-image
+    params:
+      load_file: outfile/image
+      load_repository: containerdaysjp/showks-portal
+      load_tag: latest
+      tag_file: app/.git/refs/heads/master
+      tag_prefix: prod-
+  - task: update-manifest
+    file: concourse-pipelines/common/tasks/update_manifest.yaml
+    params:
+      APP_NAME: showks-portal
+      TAG_PREFIX: prod-
+      BRANCH: master
+  - put: k8s-manifests
+    params:
+      repository: changed-k8s-manifests
+
