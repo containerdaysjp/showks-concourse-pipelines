@@ -2,13 +2,13 @@ resources:
 - name: app
   type: git
   source:
-    uri: https://github.com/containerdaysjp/showks-portal
+    uri: https://github.com/containerdaysjp/showks-portal-backend
     branch: staging
 
 - name: container-image
   type: docker-image
   source:
-    repository: containerdaysjp/showks-portal
+    repository: containerdaysjp/showks-portal-backend
     username: ((registry_user))
     password: ((registry_password))
 
@@ -41,7 +41,7 @@ jobs:
   - task: update-manifest
     file: concourse-pipelines/common/tasks/update_manifest.yaml
     params:
-      APP_NAME: showks-portal
+      APP_NAME: showks-portal-backend
       TAG_PREFIX: stg-
       BRANCH: staging
   - put: k8s-manifests
