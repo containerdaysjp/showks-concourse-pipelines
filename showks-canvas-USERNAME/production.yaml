@@ -51,6 +51,7 @@ jobs:
       TAG_PREFIX: prod-
       BRANCH: master
       USERID: USERNAME
+      VHOST_DOMAIN: .prod.showks.containerdays.jp
   - put: k8s-manifests
     params:
       repository: changed-k8s-manifests
