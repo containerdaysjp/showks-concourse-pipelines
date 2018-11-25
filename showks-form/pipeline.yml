@@ -7,7 +7,14 @@ resources:
   type: git
   source:
     uri: "https://github.com/containerdaysjp/showks-concourse-pipelines.git"
-    branch: jacopen
+- name: showks-canvas
+  type: git
+  source:
+    uri: "https://github.com/containerdaysjp/showks-canvas.git"
+- name: showks-spinnaker-pipelines
+  type: git
+  source:
+    uri: "https://github.com/containerdaysjp/showks-spinnaker-pipelines.git"
 - name: showks-form-image
   type: docker-image
   source:
@@ -28,6 +35,50 @@ jobs:
   - get: showks-form
     passed: ['unit-test']
     trigger: true
+  - get: showks-canvas
+  - get: concourse-pipelines
+  - get: showks-spinnaker-pipelines
+  - task: setup-assets
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: containerdaysjp/alpine-git-sed
+      inputs:
+        - name: showks-canvas
+        - name: concourse-pipelines
+        - name: showks-form
+        - name: showks-spinnaker-pipelines
+      outputs:
+        - name: showks-form-output
+      run:
+        path: sh
+        args:
+        - -c
+        - |
+          cp -R showks-form/* showks-form-output/
+          find showks-form-output/
+          cp -R showks-canvas showks-form-output/app/assets/
+          cp -R showks-spinnaker-pipelines showks-form-output/app/assets/
+          cp -R concourse-pipelines showks-form-output/app/assets/showks-concourse-pipelines
+          echo "======================="
+          cd showks-canvas
+          git show -s --format=%H > ../showks-form-output/commit_id
+          cd ../showks-form-output
+          ls -al
+          sed -i "s/latest/`cat commit_id`/" manifest.yml
   - put: showks-form-image
     params:
-      build: showks-form
+      build: showks-form-output
+      build_args:
+        RAILS_MASTER_KEY: ((masterkey))
+      tag_file: showks-form-output/commit_id
+      tag_as_latest: true
+      #- name: deploy-k8s
+      #  plan:
+      #  - get: showks-form
+      #    trigger: true
+      #  - get: concourse-pipelines
+      #  - task: run-test
+      #    file: concourse-pipelines/showks-form/tasks/unit-test.yml
