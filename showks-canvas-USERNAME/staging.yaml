@@ -8,7 +8,7 @@ resources:
 - name: container-image
   type: docker-image
   source:
-    repository: containerdaysjp/showks-canvas-USERNAME
+    repository: gcr.io/ipc-containerdays/showks-canvas-USERNAME
     username: ((registry_user))
     password: ((registry_password))
 

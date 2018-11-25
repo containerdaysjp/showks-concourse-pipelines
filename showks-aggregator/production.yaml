@@ -21,7 +21,7 @@ resources:
 - name: container-image
   type: docker-image
   source:
-    repository: containerdaysjp/showks-aggregator
+    repository: gcr.io/ipc-containerdays/showks-aggregator
     username: ((registry_user))
     password: ((registry_password))
 
@@ -40,7 +40,7 @@ jobs:
   - put: container-image
     params:
       load_file: outfile/image
-      load_repository: containerdaysjp/showks-aggregator
+      load_repository: gcr.io/ipc-containerdays/showks-aggregator
       load_tag: latest
       tag_file: app/.git/refs/heads/master
       tag_prefix: prod-

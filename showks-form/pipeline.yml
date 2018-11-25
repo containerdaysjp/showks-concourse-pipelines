@@ -19,8 +19,8 @@ resources:
   type: docker-image
   source:
     repository: ((repository))
-    username: ((username))
-    password: ((password))
+    username: ((registry_user))
+    password: ((registry_password))
 
 jobs:
 - name: unit-test
