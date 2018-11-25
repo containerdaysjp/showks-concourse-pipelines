@@ -31,6 +31,7 @@ jobs:
   - get: app
     trigger: true
   - get: concourse-pipelines
+  - get: container-image
   - task: tagging
     file: concourse-pipelines/common/tasks/tagging.yaml
     params:
