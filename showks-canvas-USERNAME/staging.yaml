@@ -46,6 +46,7 @@ jobs:
       BRANCH: staging
       USERID: USERNAME
       NAME_SUFFIX: -temp
+      VHOST_DOMAIN: .stg.showks.containerdays.jp
   - put: k8s-manifests
     params:
       repository: changed-k8s-manifests
