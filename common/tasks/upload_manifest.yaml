@@ -1,0 +1,15 @@
+platform: linux
+image_resource:
+  type: docker-image
+  source:
+    repository: centos
+    tag: 7
+inputs:
+  - name: concourse-pipelines
+  - name: app
+  - name: k8s-manifests
+outputs:
+  - name: changed-k8s-manifests
+run:
+  path: concourse-pipelines/common/scripts/upload_manifest.sh
+
