@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+find .
+
 echo $SERVICE_ACCOUNT > credential.json
 gcloud auth activate-service-account --key-file=credential.json
 gcloud config set project $PROJECT_NAME 
