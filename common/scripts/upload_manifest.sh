@@ -7,7 +7,7 @@ echo $SERVICE_ACCOUNT > credential.json
 gcloud auth activate-service-account --key-file=credential.json
 gcloud config set project $PROJECT_NAME 
 
-IMAGE_TAG=${TAG_PREFIX}`cat ./app/.git/refs`
+IMAGE_TAG=${TAG_PREFIX}`cat ./app/.git/refs/heads`
 
 cp -ar k8s-manifests/* k8s-manifests/.git changed-k8s-manifests/
 cd changed-k8s-manifests/
