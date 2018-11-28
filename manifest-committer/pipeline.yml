@@ -1,0 +1,116 @@
+resources:
+- name: timer
+  type: time
+  source:
+    interval: 1m
+- name: stg-k8s-manifests
+  type: git
+  source:
+    uri: git@github.com:containerdaysjp/showks-manifests-stg.git
+    branch: master
+    private_key: ((github_key))
+- name: prod-k8s-manifests
+  type: git
+  source:
+    uri: git@github.com:containerdaysjp/showks-manifests-prod.git
+    branch: master
+    private_key: ((github_key))
+jobs:
+- name: stg-git-push
+  build_logs_to_retain: 20
+  plan:
+  - get: timer
+    trigger: true
+  - get: stg-k8s-manifests
+  - task: commit
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: containerdaysjp/cloud-sdk-helm
+      inputs:
+        - name: stg-k8s-manifests
+      outputs:
+        - name: changed-k8s-manifests
+      params:
+        SERVICE_ACCOUNT: ((registry_password))
+        PROJECT_NAME: ipc-containerdays
+      run:
+        path: bash
+        args:
+        - -c
+        - |
+          echo "$SERVICE_ACCOUNT" > credential.json
+          gcloud auth activate-service-account --key-file=credential.json
+          gcloud config set project $PROJECT_NAME 
+
+          cp -ar stg-k8s-manifests/* stg-k8s-manifests/.git changed-k8s-manifests/
+
+          gsutil cp -r gs://stg-showks-concourse-bucket/manifests changed-k8s-manifests/
+
+          cd changed-k8s-manifests
+
+          git config --global user.email "jkd-showk@googlegroups.com"
+          git config --global user.name "showKs CI"
+          mkdir ~/.ssh
+          echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+          git status | grep "nothing to commit"
+          if [ $? = 1 ]
+          then
+            git add .
+            git commit -m "update manifests"
+          fi
+  - put: stg-k8s-manifests
+    params:
+      repository: changed-k8s-manifests
+- name: prod-git-push 
+  build_logs_to_retain: 20
+  plan:
+  - get: timer
+    trigger: true
+  - get: prod-k8s-manifests
+  - task: commit
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: containerdaysjp/cloud-sdk-helm
+      inputs:
+        - name: prod-k8s-manifests
+      outputs:
+        - name: changed-k8s-manifests
+      params:
+        SERVICE_ACCOUNT: ((registry_password))
+        PROJECT_NAME: ipc-containerdays
+      run:
+        path: bash
+        args:
+        - -c
+        - |
+          echo "$SERVICE_ACCOUNT" > credential.json
+          gcloud auth activate-service-account --key-file=credential.json
+          gcloud config set project $PROJECT_NAME 
+
+          cp -ar prod-k8s-manifests/* prod-k8s-manifests/.git changed-k8s-manifests/
+
+          gsutil cp -r gs://prod-showks-concourse-bucket/manifests changed-k8s-manifests/
+
+          cd changed-k8s-manifests
+
+          git config --global user.email "jkd-showk@googlegroups.com"
+          git config --global user.name "showKs CI"
+          mkdir ~/.ssh
+          echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+
+          git status | grep "nothing to commit"
+          if [ $? = 1 ]
+          then
+            git add .
+            git commit -m "update manifests"
+          fi
+  - put: prod-k8s-manifests
+    params:
+      repository: changed-k8s-manifests
