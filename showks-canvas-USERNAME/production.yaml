@@ -1,5 +1,5 @@
 resources:
-- name: app-master
+- name: app
   type: git
   source:
     uri: https://github.com/containerdaysjp/showks-canvas-USERNAME
@@ -35,7 +35,8 @@ jobs:
 - name: push-image
   plan:
   - get: app-staging
-  - get: app-master
+  - get: app
+    trigger: true
   - get: container-image
     params:
       tag_file: app-staging/.git/refs/heads/staging
@@ -44,10 +45,11 @@ jobs:
   - put: container-image
     params:
       load: container-image
-      tag_file: app-master/.git/refs/heads/master
+      tag_file: app/.git/refs/heads/master
       tag_prefix: prod-
 - name: update-manifest
-  - get: app-staging
+  plan:
+  - get: app
     trigger: true
     passed: ["push-image"]
   - get: k8s-manifests
@@ -62,7 +64,4 @@ jobs:
       VHOST_DOMAIN: .prod.showks.containerdays.jp
       SERVICE_ACCOUNT: ((registry_password))
       PROJECT_NAME: ipc-containerdays
-  - put: k8s-manifests
-    params:
-      repository: changed-k8s-manifests
 
