@@ -1,9 +1,15 @@
 resources:
-- name: app
+- name: app-master
   type: git
   source:
     uri: https://github.com/containerdaysjp/showks-canvas-USERNAME
     branch: master
+
+- name: app-staging
+  type: git
+  source:
+    uri: https://github.com/containerdaysjp/showks-canvas-USERNAME
+    branch: staging 
 
 - name: concourse-pipelines
   type: git
@@ -26,33 +32,36 @@ resources:
     password: ((registry_password))
 
 jobs:
-- name: master
+- name: push-image
   plan:
-  - get: app
-    trigger: true
-  - get: concourse-pipelines
+  - get: app-staging
+  - get: app-master
   - get: container-image
-  - task: tagging
-    file: concourse-pipelines/common/tasks/tagging.yaml
     params:
-      GITREPO: app/
-      IMAGE_NAME: gcr.io/ipc-containerdays/showks-canvas-USERNAME
-  - get: k8s-manifests
+      tag_file: app-staging/.git/refs/heads/staging
+      tag_prefix: stg-
+      save: true
   - put: container-image
     params:
-      load_file: outfile/image
-      load_repository: gcr.io/ipc-containerdays/showks-canvas-USERNAME
-      load_tag: latest
-      tag_file: app/.git/refs/heads/master
+      load: container-image
+      tag_file: app-master/.git/refs/heads/master
       tag_prefix: prod-
+- name: update-manifest
+  - get: app-staging
+    trigger: true
+    passed: ["push-image"]
+  - get: k8s-manifests
+  - get: concourse-pipelines
   - task: update-manifest
-    file: concourse-pipelines/common/tasks/update_manifest.yaml
+    file: concourse-pipelines/common/tasks/upload_manifest.yaml
     params:
       APP_NAME: showks-canvas-USERNAME
       TAG_PREFIX: prod-
       BRANCH: master
       USERID: USERNAME
       VHOST_DOMAIN: .prod.showks.containerdays.jp
+      SERVICE_ACCOUNT: ((registry_password))
+      PROJECT_NAME: ipc-containerdays
   - put: k8s-manifests
     params:
       repository: changed-k8s-manifests

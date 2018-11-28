@@ -30,8 +30,6 @@ jobs:
   plan:
   - get: app
     trigger: true
-  - get: concourse-pipelines
-  - get: k8s-manifests
   - put: container-image
     params:
       build: app/
