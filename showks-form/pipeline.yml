@@ -28,6 +28,7 @@ jobs:
   - get: showks-form
     trigger: true
   - get: concourse-pipelines
+    trigger: true
   - task: run-test
     file: concourse-pipelines/showks-form/tasks/unit-test.yml
 - name: build
@@ -37,6 +38,8 @@ jobs:
     trigger: true
   - get: showks-canvas
   - get: concourse-pipelines
+    passed: ['unit-test']
+    trigger: true
   - get: showks-spinnaker-pipelines
   - task: setup-assets
     config:
