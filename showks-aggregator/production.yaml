@@ -35,7 +35,7 @@ jobs:
     file: concourse-pipelines/common/tasks/tagging.yaml
     params:
       GITREPO: app/
-      IMAGE_NAME: containerdaysjp/showks-aggregator
+      IMAGE_NAME: gcr.io/ipc-containerdays/showks-aggregator
   - get: k8s-manifests
   - put: container-image
     params:
