@@ -1,6 +1,8 @@
 resources:
 - name: app
   type: git
+  check_every: 600h
+  webhook_token: ((github_webhook_token))
   source:
     uri: https://github.com/containerdaysjp/showks-canvas-USERNAME
     branch: master
