@@ -7,7 +7,7 @@ resource_types:
 resources:
 - name: showks-canvas-pr
   type: pull-request
-  check_every: 600h
+  check_every: 1m
   webhook_token: ((github_webhook_token))
   source:
     repository: containerdaysjp/showks-canvas-USERNAME
