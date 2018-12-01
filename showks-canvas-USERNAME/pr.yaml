@@ -46,6 +46,27 @@ jobs:
         args:
           - -xce
           - |
+            cat << EOS > checker.rb
+            require 'json'
+
+            json = ""
+            File.open(ARGV[0], "r") do |f|
+              begin
+                json = JSON.parse(f.read)
+              rescue
+                p "invalid json format"
+                exit(false)
+              end
+            end
+            if !json["userName"] || !json["gitHubId"]
+              p "userName and gitHubId are required."
+              exit(false)
+            end
+            exit
+            EOS
+
+            ruby checker.rb showks-canvas-pr/src/data/author.json
+
             echo "Merge pull request" > messages/merge
             echo "LGTM!" > messages/lgtm
             echo "You can modify src/data/author.json only" > messages/failed
