@@ -32,7 +32,7 @@ resources:
     password: ((registry_password))
 
 jobs:
-- name: master
+- name: push-image
   plan:
   - get: app
     trigger: true
@@ -49,14 +49,21 @@ jobs:
       load: container-image
       tag_file: app/.git/refs/heads/master
       tag_prefix: prod-
+- name: update-manifest
+  plan:
+  - get: app
+    trigger: true
+    passed: ["push-image"]
+  - get: k8s-manifests
+  - get: concourse-pipelines
   - task: update-manifest
-    file: concourse-pipelines/common/tasks/update_manifest.yaml
+    file: concourse-pipelines/common/tasks/upload_manifest.yaml
     params:
       APP_NAME: showks-portal-frontend
       TAG_PREFIX: prod-
       BRANCH: master
+      USERID: USERNAME
       VHOST_DOMAIN: .prod.showks.containerdays.jp
-  - put: k8s-manifests
-    params:
-      repository: changed-k8s-manifests
+      SERVICE_ACCOUNT: ((registry_password))
+      PROJECT_NAME: ipc-containerdays
 
