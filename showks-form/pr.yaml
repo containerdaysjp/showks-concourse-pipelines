@@ -1,0 +1,67 @@
+resource_types:
+- name: pull-request
+  type: docker-image
+  source:
+    repository: containerdaysjp/pr
+
+resources:
+- name: showks-canvas-pr
+  type: pull-request
+  check_every: 1m
+  source:
+    repo: containerdaysjp/showks-canvas-USERNAME
+    access_token: ((github_access_token))
+    private_key: ((github_key))
+
+- name: showks-canvas
+  type: git
+  source:
+    uri: https://github.com/containerdaysjp/showks-canvas
+
+jobs:
+- name: test
+  plan:
+  - get: showks-canvas-pr
+    trigger: true
+    version: every
+  - put: showks-canvas-pr
+    params:
+      path: showks-canvas-pr
+      status: pending
+  - get: showks-canvas
+  - task: unit-test
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: containerdaysjp/alpine-git-sed, tag: "latest"}
+      inputs:
+        - name: showks-canvas-pr
+        - name: showks-canvas
+      outputs:
+        - name: messages
+      run:
+        path: /bin/sh
+        args:
+          - -xce
+          - |
+            echo "Merge pull request" > messages/merge
+            echo "LGTM!" > messages/lgtm
+            echo "You can modify src/data/author.json only" > messages/failed
+            diff -q -r -x ".git" showks-canvas showks-canvas-pr | grep -v "src/data/author.json"  | test $(wc -l) == 0
+    on_failure:
+      put: showks-canvas-pr
+      params:
+        path: showks-canvas-pr
+        status: failure
+        comment: messages/failed
+    on_success:
+      put: showks-canvas-pr
+      params:
+        path: showks-canvas-pr
+        status: success
+        comment: messages/lgtm
+        merge:
+          method: merge
+          commit_msg: messages/merge
+
