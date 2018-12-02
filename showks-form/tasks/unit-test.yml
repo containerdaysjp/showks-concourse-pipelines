@@ -12,5 +12,5 @@ outputs:
 run:
   path: concourse-pipelines/showks-form/tasks/unit-test.sh
   args: [
-    --input-dir, showks-form
+    --input-dir, app
   ]
