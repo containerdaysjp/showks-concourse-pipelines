@@ -35,20 +35,51 @@ jobs:
       platform: linux
       image_resource:
         type: docker-image
-        source: {repository: containerdaysjp/alpine-git-sed, tag: "latest"}
+        source: 
+          repository: containerdaysjp/ruby
+          tag: "2.5"
       inputs:
         - name: showks-canvas-pr
         - name: showks-canvas
       outputs:
         - name: messages
       run:
-        path: /bin/sh
+        path: /bin/bash
         args:
           - -xce
           - |
+            echo "Sorry, something went wrong." > messages/failed
+            cd showks-canvas-pr
+  
+            # ARGS
+            AUTH_TOKEN=$AUTH_TOKEN
+            PR_NUM=`cat .git/id`
+            REPO=showks-canvas-demoaccount-USERNAME
+            URL="https://api.github.com/repos/containerdaysjp/${REPO}/pulls/${PR_NUM}"
+            CURL="curl -s -H \"Authorization: token ${AUTH_TOKEN}\""
+  
+            # Where is this PR from and what is branch name?
+            PR_FROM_BRANCH=$(${CURL} ${URL} | jq -r '.head.ref, .head.repo.full_name')
+            PR_BRANCH=$(echo $PR_FROM_BRANCH | cut -d " " -f 1)
+            PR_REMOTE=$(echo $PR_FROM_BRANCH | cut -d " " -f 2)
+  
+            # Check branch name
+            if [ `git config --get pullrequest.branch` != "staging" -a `git config --get pullrequest.basebranch` == "master" ]
+            then
+              echo "You cannot send PR to master branch directly. Send staging branch first." > ../messages/failed
+              exit 1
+            fi
+  
+            # Check github repo
+            if [ "${PR_REMOTE}" != "containerdaysjp/${REPO}" ]; then
+                echo "You cannot send PR from forked repository. Please send from same repository" > ../messages/failed
+                exit 1
+            fi
+  
+            cd ../
             cat << EOS > checker.rb
             require 'json'
-
+  
             json = ""
             File.open(ARGV[0], "r") do |f|
               begin
@@ -64,9 +95,9 @@ jobs:
             end
             exit
             EOS
-
+  
             ruby checker.rb showks-canvas-pr/src/data/author.json
-
+  
             echo "Merge pull request" > messages/merge
             echo "LGTM!" > messages/lgtm
             echo "You can modify src/data/author.json only" > messages/failed
