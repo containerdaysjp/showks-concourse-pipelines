@@ -80,7 +80,7 @@ jobs:
       build: showks-form-output
       build_args:
         RAILS_MASTER_KEY: ((masterkey))
-      tag_file: app/.git/refs/heads/staging
+      tag_file: app/.git/refs/heads/master
       tag_prefix: stg-
       tag_as_latest: true
 - name: upload-manifest
