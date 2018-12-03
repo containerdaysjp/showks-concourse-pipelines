@@ -96,6 +96,7 @@ jobs:
             exit
             EOS
   
+            echo "The file src/data/author.json looks invalid." > messages/failed
             ruby checker.rb showks-canvas-pr/src/data/author.json
   
             echo "Merge pull request" > messages/merge
