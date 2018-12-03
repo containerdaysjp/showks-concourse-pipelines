@@ -54,7 +54,7 @@ jobs:
             # ARGS
             AUTH_TOKEN=$AUTH_TOKEN
             PR_NUM=`cat .git/id`
-            REPO=showks-canvas-demoaccount-USERNAME
+            REPO=showks-canvas-USERNAME
             URL="https://api.github.com/repos/containerdaysjp/${REPO}/pulls/${PR_NUM}"
             CURL="curl -s -H \"Authorization: token ${AUTH_TOKEN}\""
   
