@@ -1,7 +1,7 @@
 resources:
 - name: app
   type: git
-  check_every: 600h
+  check_every: 3m
   webhook_token: ((github_webhook_token))
   source:
     uri: https://github.com/containerdaysjp/showks-canvas-USERNAME
@@ -16,12 +16,14 @@ resources:
 
 - name: concourse-pipelines
   type: git
+  check_every: 3m
   source:
     uri: https://github.com/containerdaysjp/showks-concourse-pipelines
     branch: master
 
 - name: k8s-manifests
   type: git
+  check_every: 3m
   source:
     uri: git@github.com:containerdaysjp/showks-manifests-stg.git
     branch: master
