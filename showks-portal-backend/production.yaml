@@ -21,7 +21,7 @@ resources:
 - name: container-image
   type: docker-image
   source:
-    repository: gcr.io/ipc-containerdays/showks-portal-backend
+    repository: gcr.io/ipc-cloudnativedays/showks-portal-backend
     username: ((registry_user))
     password: ((registry_password))
 
@@ -35,12 +35,12 @@ jobs:
     file: concourse-pipelines/common/tasks/tagging.yaml
     params:
       GITREPO: app/
-      IMAGE_NAME: gcr.io/ipc-containerdays/showks-portal-backend
+      IMAGE_NAME: gcr.io/ipc-cloudnativedays/showks-portal-backend
   - get: k8s-manifests
   - put: container-image
     params:
       load_file: outfile/image
-      load_repository: gcr.io/ipc-containerdays/showks-portal-backend
+      load_repository: gcr.io/ipc-cloudnativedays/showks-portal-backend
       load_tag: latest
       tag_file: app/.git/refs/heads/master
       tag_prefix: prod-

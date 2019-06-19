@@ -18,7 +18,7 @@ resources:
 - name: container-image
   type: docker-image
   source:
-    repository: gcr.io/ipc-containerdays/showks-form
+    repository: gcr.io/ipc-cloudnativedays/showks-form
     username: ((registry_user))
     password: ((registry_password))
 - name: k8s-manifests

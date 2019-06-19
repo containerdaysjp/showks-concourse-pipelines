@@ -9,7 +9,7 @@ resources:
   type: git
   source:
     uri: https://github.com/containerdaysjp/showks-portal-frontend
-    branch: staging 
+    branch: staging
 
 - name: concourse-pipelines
   type: git
@@ -27,7 +27,7 @@ resources:
 - name: container-image
   type: docker-image
   source:
-    repository: gcr.io/ipc-containerdays/showks-portal-frontend
+    repository: gcr.io/ipc-cloudnativedays/showks-portal-frontend
     username: ((registry_user))
     password: ((registry_password))
 
