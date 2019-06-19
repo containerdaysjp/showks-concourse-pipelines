@@ -8,7 +8,7 @@ resources:
 - name: container-image
   type: docker-image
   source:
-    repository: gcr.io/ipc-containerdays/showks-portal-backend
+    repository: gcr.io/ipc-cloudnativedays/showks-portal-backend
     username: ((registry_user))
     password: ((registry_password))
 
